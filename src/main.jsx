@@ -11,7 +11,8 @@ import Login from "./components/Login.jsx";
 import Signup from "./components/Signup.jsx";
 import About from "./components/About.jsx";
 import Home_page from "./components/Home_page.jsx";
-
+import NotFound from "./components/NotFound.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,15 +37,21 @@ const router = createBrowserRouter([
       },
       {
         path: "dashBoard",
-        element: <Home_page />
-      }
+        element: <Home_page />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
   },
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router} />
+      <ErrorBoundary>
+        <RouterProvider router={router} />
+      </ErrorBoundary>
     </Provider>
   </StrictMode>
 );

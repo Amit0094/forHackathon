@@ -15,6 +15,8 @@ const Home_page = () => {
 
   const [ischatopen , setIschatopen] = useState(false);
 
+  const [error , setError] = useState("");
+
   useEffect(() => {
     const userDetail = JSON.parse(localStorage.getItem("auth"));
     console.log("userDetail:", userDetail); // Debugging log
@@ -97,6 +99,12 @@ const Home_page = () => {
   };
 
   const handleBtn = async () => {
+
+    if(!examTopic){
+      setError("Please enter exam topic")
+      return
+    }
+
     setLoading(true);
     setExamTopic("");
     try {
@@ -120,6 +128,23 @@ const Home_page = () => {
       setLoading(false);
     }
   };
+
+  // for validate exam input 
+
+  const validateExamTopic = (value) => {
+    if (!value) return "Exam topic cannot be empty.";
+    if (value.length < 3) return "Exam topic must be at least 3 characters long.";
+    if (!/^[a-zA-Z\s]+$/.test(value)) return "Exam topic must contain only letters and spaces.";
+    return ""; // No errors
+  };
+  
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setError(validateExamTopic(value));
+    setExamTopic(value);
+  };
+  
 
   return (
     <>
@@ -148,16 +173,21 @@ const Home_page = () => {
                   type="text"
                   placeholder="Enter Exam Topic"
                   value={examTopic}
-                  onChange={(e) => setExamTopic(e.target.value)}
+                  onChange={(e) => handleChange(e)}
                   className="px-4 py-3 rounded-3xl bg-transparent border-[1px] text-base font-semibold"
                 />
+
+                {
+                  error && <h4 className="text-lg font-semibold capitalize ml-2 text-red-500">{error}</h4>
+                }
               </div>
             </div>
 
             {!isUrlAvailable && (
               <button
-                className="px-5 py-2 bg-blue-500 text-white capitalize font-semibold text-lg rounded-3xl mt-5"
+                className={`px-5 py-2 text-white capitalize font-semibold text-lg rounded-3xl mt-5 ${error ? "bg-gray-500" : "bg-blue-500"}`}
                 onClick={() => handleBtn()}
+                disabled={error}
               >
                 {loading ? "Loading..." : "Prepare Test"}
               </button>

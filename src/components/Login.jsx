@@ -24,8 +24,15 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    setIsDisabled(true);
+
     e.preventDefault();
+
+    if(formData.userEmail === "" || formData.password === ""){
+      setError("Please fill the form correctly..")
+      return
+    }
+
+    setIsDisabled(true);
 
     try {
       const response = await fetch(
@@ -62,7 +69,7 @@ const Login = () => {
               userEmail: data.userEmail
           }}));
 
-          navigate("/home");
+          navigate("/dashBoard");
         } else {
           navigate("/");
         }
