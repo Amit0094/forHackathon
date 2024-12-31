@@ -42,7 +42,7 @@ const NavBar = () => {
     },
     {
       name: "DashBoard",
-      slug: "/dashboard",
+      slug: "/dashBoard",
       active: authStatus,
     }
   ];
