@@ -3,9 +3,14 @@ import { useNavigate } from "react-router-dom";
 import coverPicture from "../assets/home_page_img.png"
 
 const Landing_page = () => {
+
   const navigate = useNavigate();
 
   const btnClick = () => {
+    const data = JSON.parse(localStorage.getItem("auth"));
+    if(data){
+      return navigate('/dashboard')
+    }
     return navigate("/signup");
   };
 
